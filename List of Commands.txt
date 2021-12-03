@@ -1,0 +1,31 @@
+<===== LIST OF COMMANDS TO SET UP TICK STACK IN A DOCKERIZED ENVIRONMENT ====>
+
+1) Setting up docker on Ubuntu 20.04
+
+	sudo apt install docker.io
+
+2) Checking the list of active containers
+
+	sudo docker ps
+
+3) Creating a new netowrk on Docker
+
+	sudo docker create network tick-stack-network
+
+4) Setting up InfluxDB version 1.8 on container 1
+
+	sudo docker run -p 8086:8086 --net=tick-stack-net -v influxdb:/var/lib/influxdb influxdb:1.8
+
+5) Setting up Telegraf on container 2
+
+	sudo docker run --net=container:crazy_allen telegraf
+
+6) Setting up Chronograf on container 3
+
+	sudo docker run -p 8888:8888 --net=tick-stack-network chronograf --influxdb-url=http://influxdb:8086
+
+7) Setting up Capacitor in container 4
+
+	sudo docker run --net=container:crazy_allen kapacitor
+
+NOTE: You might have to start all the containers in different terminals on your machine, since one terminal started on one machine would not allow other commands to be executed on that terminal
